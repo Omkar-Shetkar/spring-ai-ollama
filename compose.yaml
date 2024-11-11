@@ -1,0 +1,20 @@
+services:
+  pgvector:
+    image: 'pgvector/pgvector:pg17'
+    environment:
+      - 'POSTGRES_DB=chat-engine-db'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=chat-engine-user'
+    labels:
+      - "org.springframework.boot.service-connection=postgres"
+    ports:
+      - '5432:5432'
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: adminpassword
+    ports:
+      - "8081:80"
+    depends_on:
+      - pgvector
