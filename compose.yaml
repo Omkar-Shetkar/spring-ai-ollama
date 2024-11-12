@@ -1,6 +1,7 @@
 services:
   pgvector:
     image: 'pgvector/pgvector:pg17'
+    container_name: pgvector-container
     environment:
       - 'POSTGRES_DB=chat-engine-db'
       - 'POSTGRES_PASSWORD=secret'
@@ -9,12 +10,14 @@ services:
       - "org.springframework.boot.service-connection=postgres"
     ports:
       - '5432:5432'
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: adminpassword
+  ollama:
+    image: ollama/ollama
+    container_name: ollama-container
     ports:
-      - "8081:80"
-    depends_on:
-      - pgvector
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    environment:
+      - OLLAMA_MODEL=llama3.2
+volumes:
+  ollama: {}  # Define the volume here
